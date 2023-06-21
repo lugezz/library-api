@@ -13,11 +13,6 @@ services:
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
       - mysql-db:/var/lib/mysql
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      - --init-file=/docker-entrypoint-initdb.d/init.sql
-
 
   redis:
     image: redis
