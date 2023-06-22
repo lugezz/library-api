@@ -6,7 +6,7 @@ CREATE TABLE users (
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE genre (
+CREATE TABLE genres (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(120) NOT NULL,
     description VARCHAR(120) NULL,
@@ -15,14 +15,24 @@ CREATE TABLE genre (
     PRIMARY KEY (id)
 );
 
-
-CREATE TABLE library (
+CREATE TABLE authors (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(120) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+
+CREATE TABLE libraries (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(120) NOT NULL,
+    authorId INT NULL,
     genreId INT NULL,
     description VARCHAR(120) NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (genreId) REFERENCES genre(id)
+    FOREIGN KEY (authorId) REFERENCES authors(id),
+    FOREIGN KEY (genreId) REFERENCES genres(id)
 );

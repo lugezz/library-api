@@ -2,9 +2,10 @@ const Library = require('../models/libraryModel');
 
 
 // GENRE -----------------------------------------------------
+// Get all genres
 exports.getAllGenres = async (req, res, next) => {
     try {
-        const genres = await Library.genreModel.find();
+        const genres = await Library.genreModel.findAll();
         res.status(200).json({
             status: 'success',
             results: genres.length,
@@ -13,15 +14,17 @@ exports.getAllGenres = async (req, res, next) => {
             }
         });
     } catch (err) {
+        console.log(err);
         res.status(400).json({
             status: 'fail'
         });
     }
 };
 
+// Get a genre by id
 exports.getGenre = async (req, res, next) => {
     try {
-        const genre = await Library.genreModel.findById(req.params.id);
+        const genre = await Library.genreModel.findByPk(req.params.id);
         res.status(200).json({
             status: 'success',
             data: {
@@ -35,6 +38,7 @@ exports.getGenre = async (req, res, next) => {
     }
 };
 
+// Create a genre
 exports.createGenre = async (req, res, next) => {
     try {
         const genre = await Library.genreModel.create(req.body);
@@ -52,11 +56,13 @@ exports.createGenre = async (req, res, next) => {
     }
 };
 
+// Update a genre
 exports.updateGenre = async (req, res, next) => {
     try {
-        const genre = await Library.genreModel.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: genre
+        const genre = await Library.genreModel.update(req.body, {
+            where: {
+                id: req.params.id
+            }
         });
         res.status(200).json({
             status: 'success',
@@ -65,20 +71,27 @@ exports.updateGenre = async (req, res, next) => {
             }
         });
     } catch (err) {
+        console.log(err);
         res.status(400).json({
             status: 'fail'
         });
     }
 };
 
+// Delete a genre
 exports.deleteGenre = async (req, res, next) => {
     try {
-        await Library.genreModel.findByIdAndDelete(req.params.id);
+        await Library.genreModel.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
         res.status(204).json({
             status: 'success',
             data: null
         });
     } catch (err) {
+        console.log(err);
         res.status(400).json({
             status: 'fail'
         });

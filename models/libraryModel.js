@@ -9,7 +9,7 @@ exports.genreModel = db.define("genres",{
     "updatedAt": {"type": DataTypes.DATE}
 })
 
-exports.libraryModel = db.define("library",{
+exports.libraryModel = db.define("libraries",{
     "name": {"type": DataTypes.STRING},
     "genreId": {"type": DataTypes.INTEGER},
     "description": {"type": DataTypes.STRING},

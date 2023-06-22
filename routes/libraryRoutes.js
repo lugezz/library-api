@@ -8,7 +8,7 @@ const router = express.Router();
 
 // Localhost:3000/api/v1/libraries
 // GENRE -----------------------------------------------------
-router.route('/genre/')
+router.route('/genre')
     .get(protect, libraryController.getAllGenres)
     .post(protect, libraryController.createGenre);
 
