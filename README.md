@@ -18,28 +18,28 @@ Main endpoint of the api is
     }
     ```
 - Get a Genre
-    - GET /genres/<id>/
+    - GET /genre/< id >/
 - Update a Genre
-    - PATCH /genres/<id>/
+    - PATCH /genre/< id >/
 - Delete a Genre
-    - DELETE /genres/<id>/
+    - DELETE /genre/< id >/
 
 ## Authors
 - List all Authors
-    - GET /authors/
+    - GET /author/
 - Create a new Author
-    - POST /authors/
+    - POST /author/
     ```
     {
        "name": "author name"
     }
     ```
 - Get a Author
-    - GET /authors/<id>/
+    - GET /author/< id >/
 - Update a Author
-    - PATCH /authors/<id>/
+    - PATCH /author/< id >/
 - Delete a Author
-    - DELETE /authors/<id>/
+    - DELETE /author/< id >/
 
 ## Books
 - List all Books
@@ -56,11 +56,11 @@ Main endpoint of the api is
     }
     ```
 - Get a Book
-    - GET /books/<id>/
+    - GET /books/< id >/
 - Update a Book
-    - PATCH /books/<id>/
+    - PATCH /books/< id >/
 - Delete a Book
-    - DELETE /books/<id>/
+    - DELETE /books/< id >/
 
 ## Users
 - Sign up
