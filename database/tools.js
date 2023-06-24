@@ -17,15 +17,12 @@ exports.fullDB = () => {
             
             if (title.length > 200) {
                 title = title.slice(0, 200);
-                title = utf_8.encode(title);
             }
             if (author.length > 120) {
                 author = author.slice(0, 120);
-                author = utf_8.encode(author);
             }
             if (genre.length > 120) {
                 genre = genre.slice(0, 120);
-                genre = utf_8.encode(genre);
             }
 
             try {
