@@ -18,4 +18,26 @@ router.route('/genre/:id')
     .delete(protect, libraryController.deleteGenre);
 // -----------------------------------------------------
 
+// AUTHOR -----------------------------------------------------
+router.route('/author')
+    .get(protect, libraryController.getAllAuthors)
+    .post(protect, libraryController.createAuthor);
+
+router.route('/author/:id')
+    .get(protect, libraryController.getAuthor)
+    .patch(protect, libraryController.updateAuthor)
+    .delete(protect, libraryController.deleteAuthor);
+// -----------------------------------------------------
+
+// BOOK -----------------------------------------------------
+router.route('/book')
+    .get(protect, libraryController.getAllBooks)
+    .post(protect, libraryController.createBook);
+
+router.route('/book/:id')
+    .get(protect, libraryController.getBook)
+    .patch(protect, libraryController.updateBook)
+    .delete(protect, libraryController.deleteBook);
+// -----------------------------------------------------
+
 module.exports = router;

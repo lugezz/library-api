@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('./database/db');
+const { fullDB } = require('./database/tools');
 
 const { REDIS_PORT, REDIS_URL, SESSION_SECRET } = require('./config/config');
 const cors = require('cors');
@@ -18,7 +19,10 @@ const port = process.env.PORT || 3000;
 
 const connectWithRetry = () => {
   db.authenticate()
-    .then(() => console.log('Successfully connected to MySQL'))
+    .then(() => {
+      console.log('Successfully connected to MySQL')
+      fullDB();
+    })
     .catch(err => {
         console.error('Something went wrong', err);
         setTimeout(connectWithRetry, 5000);

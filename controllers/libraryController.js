@@ -25,6 +25,12 @@ exports.getAllGenres = async (req, res, next) => {
 exports.getGenre = async (req, res, next) => {
     try {
         const genre = await Library.genreModel.findByPk(req.params.id);
+        if (!genre) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No genre found with that ID'
+            });
+        }
         res.status(200).json({
             status: 'success',
             data: {
@@ -98,48 +104,17 @@ exports.deleteGenre = async (req, res, next) => {
     }
 }
 
-// LIBRARY -----------------------------------------------------
 
-exports.getAllLibraries = async (req, res, next) => {
+// AUTHORS -----------------------------------------------------
+// Get all Authors
+exports.getAllAuthors = async (req, res, next) => {
     try {
-        const libraries = await Library.libraryModel.find();
+        const authors = await Library.authorModel.findAll();
         res.status(200).json({
             status: 'success',
-            results: libraries.length,
+            results: authors.length,
             data: {
-                libraries
-            }
-        });
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail'
-        });
-    }
-};
-
-exports.getLibrary = async (req, res, next) => {
-    try {
-        const library = await Library.libraryModel.findById(req.params.id);
-        res.status(200).json({
-            status: 'success',
-            data: {
-                library
-            }
-        });
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail'
-        });
-    }
-};
-
-exports.createLibrary = async (req, res, next) => {
-    try {
-        const library = await Library.libraryModel.create(req.body);
-        res.status(201).json({
-            status: 'success',
-            data: {
-                library
+                authors
             }
         });
     } catch (err) {
@@ -150,16 +125,21 @@ exports.createLibrary = async (req, res, next) => {
     }
 };
 
-exports.updateLibrary = async (req, res, next) => {
+// Get an author by id
+exports.getAuthor = async (req, res, next) => {
     try {
-        const library = await Library.libraryModel.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: library
-        });
+        const author = await Library.authorModel.findByPk(req.params.id);
+        if (!author) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No author found with that ID'
+            });
+        }
+
         res.status(200).json({
             status: 'success',
             data: {
-                library
+                author
             }
         });
     } catch (err) {
@@ -169,14 +149,197 @@ exports.updateLibrary = async (req, res, next) => {
     }
 };
 
-exports.deleteLibrary = async (req, res, next) => {
+// Create an author
+exports.createAuthor = async (req, res, next) => {
     try {
-        await Library.libraryModel.findByIdAndDelete(req.params.id);
+        const author = await Library.authorModel.create(req.body);
+        res.status(201).json({
+            status: 'success',
+            data: {
+                author
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+};
+
+// Update an author
+exports.updateAuthor = async (req, res, next) => {
+    try {
+        const author = await Library.authorModel.update(req.body, {
+            where: {
+                id: req.params.id
+            }
+        });
+        res.status(200).json({
+            status: 'success',
+            data: {
+                author
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+};
+
+// Delete an Author
+exports.deleteAuthor = async (req, res, next) => {
+    try {
+        await Library.authorModel.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
         res.status(204).json({
             status: 'success',
             data: null
         });
     } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+}
+
+
+// BOOKS -----------------------------------------------------
+// Get all Books
+exports.getAllBooks = async (req, res, next) => {
+    if (req.query.page || req.query.limit) {
+        return getPaginateBooks(req, res, next);
+    } 
+
+    try {
+        const books = await Library.bookModel.findAll();
+        res.status(200).json({
+            status: 'success',
+            results: books.length,
+            data: {
+                books
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+};
+
+// Get a Book by id
+exports.getBook = async (req, res, next) => {
+    try {
+        const book = await Library.bookModel.findByPk(req.params.id);
+        if (!book) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No author found with that ID'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                book
+            }
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+};
+
+// Create a Book
+exports.createBook = async (req, res, next) => {
+    try {
+        const book = await Library.bookModel.create(req.body);
+        res.status(201).json({
+            status: 'success',
+            data: {
+                book
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+};
+
+// Update a Book
+exports.updateBook = async (req, res, next) => {
+    try {
+        const book = await Library.bookModel.update(req.body, {
+            where: {
+                id: req.params.id
+            }
+        });
+        res.status(200).json({
+            status: 'success',
+            data: {
+                book
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+};
+
+// Delete an Book
+exports.deleteBook = async (req, res, next) => {
+    try {
+        await Library.bookModel.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
+        res.status(204).json({
+            status: 'success',
+            data: null
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+}
+
+
+// PAGINATION -----------------------------------------------------
+const getPaginateBooks = async (req, res, next) => {
+    try {
+        const page = req.query.page * 1 || 1;
+        const limit = req.query.limit * 1 || 10;
+        const skip = (page - 1) * limit;
+
+        const books = await Library.bookModel.findAll({
+            limit,
+            offset: skip
+        });
+
+        res.status(200).json({
+            status: 'success',
+            results: books.length,
+            data: {
+                books
+            }
+        });
+    } catch (err) {
+        console.log(err);
         res.status(400).json({
             status: 'fail'
         });

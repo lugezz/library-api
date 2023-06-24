@@ -9,7 +9,7 @@ CREATE TABLE users (
 CREATE TABLE genres (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(120) NOT NULL,
-    description VARCHAR(120) NULL,
+    description VARCHAR(120),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
@@ -24,12 +24,13 @@ CREATE TABLE authors (
 );
 
 
-CREATE TABLE libraries (
+CREATE TABLE books (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(120) NOT NULL,
-    authorId INT NULL,
-    genreId INT NULL,
-    description VARCHAR(120) NULL,
+    title VARCHAR(200) NOT NULL,
+    authorId INT NOT NULL,
+    genreId INT NOT NULL,
+    description VARCHAR(120),
+    image VARCHAR(300),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
