@@ -1,19 +1,19 @@
 # Library API
 API for a Library Management -  Api for handling borrowing and returning books to the library
 
-# Endpoint
+# Endpoints
 
 Main endpoint of the api is 
 <server>/api/v1/
 
 ## Genres
 - List all Genres
-    - GET /genres/
+    - GET /genre/
 - Create a new Genre
-    - POST /genres/
+    - POST /genre/
     ```
     {
-    "name": "genre name"
+    "name": "genre name",
     "description": "genre description"
     }
     ```
@@ -43,9 +43,9 @@ Main endpoint of the api is
 
 ## Books
 - List all Books
-    - GET /books/
+    - GET /book/
 - Create a new Book
-    - POST /books/
+    - POST /book/
     ```
     {
         "title": "book title",
@@ -56,11 +56,11 @@ Main endpoint of the api is
     }
     ```
 - Get a Book
-    - GET /books/< id >/
+    - GET /book/< id >/
 - Update a Book
-    - PATCH /books/< id >/
+    - PATCH /book/< id >/
 - Delete a Book
-    - DELETE /books/< id >/
+    - DELETE /book/< id >/
 
 ## Users
 - Sign up
