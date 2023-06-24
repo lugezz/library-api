@@ -52,7 +52,7 @@ exports.fullDB = () => {
                         image: image}
                     );
                 };
-                console.log("Item inserted successfully", i + 1);
+                // console.log("Item inserted successfully", i + 1);
             } catch (err) {
                 console.log("Unable to insert item at row ", i + 1);
                 console.log("Error on:", 'title', title, 'author', author, 'genre', genre, 'image', image);
