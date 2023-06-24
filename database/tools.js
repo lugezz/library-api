@@ -18,6 +18,12 @@ exports.fullDB = () => {
             if (title.length > 200) {
                 title = title.slice(0, 200);
             }
+            if (author.length > 120) {
+                author = author.slice(0, 120);
+            }
+            if (genre.length > 120) {
+                genre = genre.slice(0, 120);
+            }
 
             try {
                 // Genre            
