@@ -6,6 +6,19 @@ const Library = require('../models/libraryModel.js');
 const fileName = "./database/Books.csv"
 
 
+const cleanString = (input) => {
+    var output = "";
+    for (var i=0; i<input.length; i++) {
+        if (input.charCodeAt(i) <= 127) {
+            output += input.charAt(i);
+        } else {
+            output += "_";
+        }
+    }
+    return output;
+}
+
+
 exports.fullDB = () => {
     csvtojson().fromFile(fileName).then(async source => {
         // Fetching the data from each row 
@@ -16,13 +29,13 @@ exports.fullDB = () => {
                 image = source[i]["Image"]
             
             if (title.length > 200) {
-                title = title.slice(0, 200);
+                title = cleanString(title.slice(0, 200));
             }
             if (author.length > 120) {
-                author = author.slice(0, 120);
+                author = cleanString(author.slice(0, 120));
             }
             if (genre.length > 120) {
-                genre = genre.slice(0, 120);
+                genre = cleanString(genre.slice(0, 120));
             }
 
             try {
