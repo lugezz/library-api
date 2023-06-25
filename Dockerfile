@@ -11,7 +11,7 @@ COPY package*.json ./
 
 ARG NODE_ENV
 # Adding --only=prod or --production would not install devDependencies and just install dependencies.
-RUN if [ "$NODE_ENV" = "production" ]; then npm ci --only=production; else npm install; fi
+RUN if [ "$NODE_ENV" = "production" ]; then npm ci --omit=dev; else npm install; fi
 
 # Bundle app source
 COPY . .

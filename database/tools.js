@@ -7,15 +7,16 @@ const fileName = "./database/Books.csv"
 
 
 const cleanString = (input) => {
-    var output = "";
-    for (var i=0; i<input.length; i++) {
-        if (input.charCodeAt(i) <= 127) {
-            output += input.charAt(i);
-        } else {
-            output += "_";
-        }
-    }
-    return output;
+    // var output = "";
+    // for (var i=0; i<input.length; i++) {
+    //     if (input.charCodeAt(i) <= 127) {
+    //         output += input.charAt(i);
+    //     } else {
+    //         output += "_";
+    //     }
+    // }
+    // return output;
+    return input.replace(/[^a-zA-Z0-9 ]/g, "_");
 }
 
 
@@ -67,8 +68,10 @@ exports.fullDB = () => {
                         genreId: genre_db.id,
                         image: image}
                     );
+                    console.log(`Book ${title.slice(50)} inserted successfully`, i + 1);
+                } else {
+                    console.log(`Book ${title.slice(50)} already exists`, i + 1);
                 };
-                console.log("Item inserted successfully", i + 1);
             } catch (err) {
                 console.log("Unable to insert item at row ", i + 1);
                 console.log("Error on:", 'title', title, 'author', author, 'genre', genre, 'image', image);
