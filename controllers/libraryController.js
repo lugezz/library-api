@@ -219,23 +219,7 @@ exports.getAllBooks = async (req, res, next) => {
     limit = req.query.limit || 1000;
     books_count = await Library.bookModel.count();
 
-    return getPaginateBooks(page, limit, books_count);
-    
-    try {
-        const books = await Library.bookModel.findAll();
-        res.status(200).json({
-            status: 'success',
-            results: books.length,
-            data: {
-                books
-            }
-        });
-    } catch (err) {
-        console.log(err);
-        res.status(400).json({
-            status: 'fail'
-        });
-    }
+    return getPaginateBooks(res, page, limit, books_count);
 };
 
 // Get a Book by id
@@ -324,7 +308,7 @@ exports.deleteBook = async (req, res, next) => {
 
 
 // PAGINATION -----------------------------------------------------
-const getPaginateBooks = async (page, limit, books_count = 0) => {
+const getPaginateBooks = async (res, page, limit, books_count = 0) => {
     try {
         const skip = (page - 1) * limit;
 
