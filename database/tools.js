@@ -22,7 +22,7 @@ const cleanString = (input) => {
 exports.fullDB = () => {
     csvtojson().fromFile(fileName).then(async source => {
         // Fetching the data from each row 
-        for (var i = 0; i < source.length; i++) {
+        for (var i = 120300; i < source.length; i++) {
             var title = source[i]["Title"],
                 author = source[i]["Author"],
                 genre = source[i]["Genre"],
@@ -68,7 +68,7 @@ exports.fullDB = () => {
                         image: image}
                     );
                 };
-                // console.log("Item inserted successfully", i + 1);
+                console.log("Item inserted successfully", i + 1);
             } catch (err) {
                 console.log("Unable to insert item at row ", i + 1);
                 console.log("Error on:", 'title', title, 'author', author, 'genre', genre, 'image', image);
