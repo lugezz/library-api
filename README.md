@@ -44,6 +44,13 @@ Main endpoint of the api is
 ## Books
 - List all Books
     - GET /book/
+    It returns the total count of books but no more than 1000 books per page.
+
+- Paginated List of Books
+    - GET /book/?page=< page >&limit=< limit
+    - page: page number
+    - limit: number of books per page
+
 - Create a new Book
     - POST /book/
     ```
