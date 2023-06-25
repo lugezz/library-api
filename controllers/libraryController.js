@@ -212,11 +212,15 @@ exports.deleteAuthor = async (req, res, next) => {
 
 // BOOKS -----------------------------------------------------
 // Get all Books
+// If there is a query string, use pagination
+// If not it returns 1000 books
 exports.getAllBooks = async (req, res, next) => {
-    if (req.query.page || req.query.limit) {
-        return getPaginateBooks(req, res, next);
-    } 
+    page = req.query.page || 1;
+    limit = req.query.limit || 1000;
+    books_count = await Library.bookModel.count();
 
+    return getPaginateBooks(page, limit, books_count);
+    
     try {
         const books = await Library.bookModel.findAll();
         res.status(200).json({
@@ -320,10 +324,8 @@ exports.deleteBook = async (req, res, next) => {
 
 
 // PAGINATION -----------------------------------------------------
-const getPaginateBooks = async (req, res, next) => {
+const getPaginateBooks = async (page, limit, books_count = 0) => {
     try {
-        const page = req.query.page * 1 || 1;
-        const limit = req.query.limit * 1 || 10;
         const skip = (page - 1) * limit;
 
         const books = await Library.bookModel.findAll({
@@ -333,7 +335,7 @@ const getPaginateBooks = async (req, res, next) => {
 
         res.status(200).json({
             status: 'success',
-            results: books.length,
+            results: Math.max(books.length, books_count),
             data: {
                 books
             }
