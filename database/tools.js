@@ -29,19 +29,20 @@ exports.fullDB = () => {
                 image = source[i]["Image"]
             
             if (title.length > 200) {
-                title = cleanString(title.slice(0, 200));
+                title = title.slice(0, 200);
             }
             if (author.length > 120) {
-                author = cleanString(author.slice(0, 120));
+                author = author.slice(0, 120);
             }
             if (genre.length > 120) {
-                genre = cleanString(genre.slice(0, 120));
+                genre = genre.slice(0, 120);
             }
 
             try {
                 // Genre            
                 let genre_db = await Library.genreModel.findOne({ where: { name: genre } });
                 if (genre_db === null) {
+                    genre = cleanString(genre);
                     genre_db = await Library.genreModel.create(
                         {name: genre}
                     );
@@ -50,6 +51,7 @@ exports.fullDB = () => {
                 // Author
                 let author_db = await Library.authorModel.findOne({ where: {name: author} });
                 if (author_db === null) {
+                    author = cleanString(author);
                     author_db = await Library.authorModel.create(
                         {id: null, name: author}
                     );
@@ -58,6 +60,7 @@ exports.fullDB = () => {
                 // Book
                 const book_db = await Library.bookModel.findOne({ where: {title: title} });
                 if (book_db === null) {
+                    title = cleanString(title);
                     await Library.bookModel.create(
                         {title: title,
                         authorId: author_db.id,
