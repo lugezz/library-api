@@ -5,25 +5,10 @@ const Library = require('../models/libraryModel.js');
 // CSV file name
 const fileName = "./database/Books.csv"
 
-
-const cleanString = (input) => {
-    // var output = "";
-    // for (var i=0; i<input.length; i++) {
-    //     if (input.charCodeAt(i) <= 127) {
-    //         output += input.charAt(i);
-    //     } else {
-    //         output += "_";
-    //     }
-    // }
-    // return output;
-    return input.replace(/[^a-zA-Z0-9 ]/g, "_");
-}
-
-
 exports.fullDB = () => {
     csvtojson().fromFile(fileName).then(async source => {
         // Fetching the data from each row 
-        for (var i = 120300; i < source.length; i++) {
+        for (var i = 200000; i < source.length; i++) {
             var title = source[i]["Title"],
                 author = source[i]["Author"],
                 genre = source[i]["Genre"],
@@ -43,7 +28,6 @@ exports.fullDB = () => {
                 // Genre            
                 let genre_db = await Library.genreModel.findOne({ where: { name: genre } });
                 if (genre_db === null) {
-                    genre = cleanString(genre);
                     genre_db = await Library.genreModel.create(
                         {name: genre}
                     );
@@ -52,7 +36,6 @@ exports.fullDB = () => {
                 // Author
                 let author_db = await Library.authorModel.findOne({ where: {name: author} });
                 if (author_db === null) {
-                    author = cleanString(author);
                     author_db = await Library.authorModel.create(
                         {id: null, name: author}
                     );
@@ -61,16 +44,15 @@ exports.fullDB = () => {
                 // Book
                 const book_db = await Library.bookModel.findOne({ where: {title: title} });
                 if (book_db === null) {
-                    title = cleanString(title);
                     await Library.bookModel.create(
                         {title: title,
                         authorId: author_db.id,
                         genreId: genre_db.id,
                         image: image}
                     );
-                    console.log(`Book ${title.slice(50)} inserted successfully`, i + 1);
+                    console.log(`Book ${title.slice(0, 50)} inserted successfully`, i + 1);
                 } else {
-                    console.log(`Book ${title.slice(50)} already exists`, i + 1);
+                    console.log(`Book ${title.slice(0, 50)} already exists`, i + 1);
                 };
             } catch (err) {
                 console.log("Unable to insert item at row ", i + 1);
