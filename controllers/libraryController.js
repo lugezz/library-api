@@ -102,28 +102,21 @@ exports.deleteGenre = async (req, res, next) => {
             status: 'fail'
         });
     }
-}
+};
 
 
 // AUTHORS -----------------------------------------------------
 // Get all Authors
+// If there is a query string, use pagination
+// If not it returns 1000 books
 exports.getAllAuthors = async (req, res, next) => {
-    try {
-        const authors = await Library.authorModel.findAll();
-        res.status(200).json({
-            status: 'success',
-            results: authors.length,
-            data: {
-                authors
-            }
-        });
-    } catch (err) {
-        console.log(err);
-        res.status(400).json({
-            status: 'fail'
-        });
-    }
+    page = req.query.page || 1;
+    limit = req.query.limit || 1000;
+    authors_count = await Library.authorModel.count();
+
+    return getPaginateAuthors(res, page, limit, authors_count);
 };
+
 
 // Get an author by id
 exports.getAuthor = async (req, res, next) => {
@@ -207,7 +200,8 @@ exports.deleteAuthor = async (req, res, next) => {
             status: 'fail'
         });
     }
-}
+};
+
 
 
 // BOOKS -----------------------------------------------------
@@ -330,4 +324,28 @@ const getPaginateBooks = async (res, page, limit, books_count = 0) => {
             status: 'fail'
         });
     }
-}
+};
+
+const getPaginateAuthors = async (res, page, limit, authors_count = 0) => {
+    try {
+        const skip = (page - 1) * limit;
+
+        const authors = await Library.authorModel.findAll({
+            limit,
+            offset: skip
+        });
+
+        res.status(200).json({
+            status: 'success',
+            results: Math.max(authors.length, authors_count),
+            data: {
+                books
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+};

@@ -27,6 +27,14 @@ Main endpoint of the api is
 ## Authors
 - List all Authors
     - GET /author/
+    It returns the total count of authors but no more than 1000 authors per page.
+
+- Paginated List of Authors
+    - GET /author/?page=< page >&limit=< limit
+    - page: page number
+    - limit: number of books per page
+
+
 - Create a new Author
     - POST /author/
     ```
