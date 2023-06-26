@@ -1,6 +1,8 @@
 const csvtojson = require("csvtojson");
+const dbConfig = require("../config/config.js");
 const db = require("./db.js");
 const Library = require('../models/libraryModel.js');
+const mysql = require("mysql");
 
 // CSV file name
 const fileName = "./database/Books.csv"
@@ -63,4 +65,82 @@ exports.fullDB = () => {
     console.log(
         "All items stored into database successfully");
     })
+};
+
+// Import authors, genre and books from CSV file
+// Using SQL queries
+
+// connect to the database
+let con = mysql.createConnection({
+    host: dbConfig.DB_HOST,
+    user: dbConfig.DB_USER,
+    password: dbConfig.DB_PASSWORD,
+    database: dbConfig.DB_NAME
+});
+  
+
+exports.fullDB2 = () => {
+    // Connecting to the database
+    con.connect((err) => {
+        if (err) return console.error('error: ' + err.message);
+    });
+
+    csvtojson().fromFile(fileName).then(source => {
+  
+        // Fetching the data from each row and inserting to the table "products"
+        for (var i = 0; i < source.length; i++) {
+            var title = source[i]["Title"],
+                author = source[i]["Author"],
+                genre = source[i]["Genre"],
+                image = source[i]["Image"]
+            
+            let insertStatementAuthor = "INSERT IGNORE INTO authors (name)"
+            let valuesAuthor = [author]
+            let insertStatementGenre = "INSERT IGNORE INTO genres (name)"
+            let valuesGenre = [genre]
+
+            // Inserting data of current row into database for authors and genres
+            con.query(insertStatementAuthor, valuesAuthor, 
+                (err, results, fields) => {
+                if (err) {
+                    console.log("Unable to insert Author at row ", i + 1);
+                    return console.log(err);
+                }
+            });
+            con.query(insertStatementGenre, valuesGenre, 
+                (err, results, fields) => {
+                if (err) {
+                    console.log("Unable to insert Genre at row ", i + 1);
+                    return console.log(err);
+                }
+            });
+            authorId = "SELECT id FROM authors WHERE name = '" + author + "'"
+            genreId = "SELECT id FROM genres WHERE name = '" + genre + "'"
+            // Inserting data of current row into database for books
+            con.query(authorId, (err, results, fields) => {
+                if (err) {
+                    console.log("Unable to get Author ID at row ", i + 1);
+                    return console.log(err);
+                }
+                authorId = results[0].id;
+                con.query(genreId, (err, results, fields) => {
+                    if (err) {
+                        console.log("Unable to get Genre ID at row ", i + 1);
+                        return console.log(err);
+                    }
+                    genreId = results[0].id;
+                    let insertStatementBook = "INSERT IGNORE INTO books (title, authorId, genreId, image)"
+                    let valuesBook = [title, authorId, genreId, image]
+                    con.query(insertStatementBook, valuesBook, 
+                        (err, results, fields) => {
+                        if (err) {
+                            console.log("Unable to insert Book at row ", i + 1);
+                            return console.log(err);
+                        }
+                    });
+                });
+            });
+        }
+        console.log("Records inserted into database successfully...!!");
+    });
 };

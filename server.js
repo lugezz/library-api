@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require('./database/db');
-const { fullDB } = require('./database/tools');
+const { fullDB2 } = require('./database/tools');
 
 const { REDIS_PORT, REDIS_URL, SESSION_SECRET } = require('./config/config');
 const cors = require('cors');
@@ -21,7 +21,7 @@ const connectWithRetry = () => {
   db.authenticate()
     .then(() => {
       console.log('Successfully connected to MySQL')
-      fullDB();
+      fullDB2();
     })
     .catch(err => {
         console.error('Something went wrong', err);
