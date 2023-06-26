@@ -339,7 +339,7 @@ const getPaginateAuthors = async (res, page, limit, authors_count = 0) => {
             status: 'success',
             results: Math.max(authors.length, authors_count),
             data: {
-                books
+                authors
             }
         });
     } catch (err) {
