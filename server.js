@@ -21,7 +21,7 @@ const connectWithRetry = () => {
   db.authenticate()
     .then(() => {
       console.log('Successfully connected to MySQL')
-      fullDB2();
+      fullDB();
     })
     .catch(err => {
         console.error('Something went wrong', err);
