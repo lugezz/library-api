@@ -80,13 +80,20 @@ let con = mysql.createConnection({
   
 
 exports.fullDB2 = () => {
+    let authorId
+    let genreId
+    let insertStatementAuthor
+    let insertStatementGenre
+    let valuesAuthor
+    let valuesGenre
+    
     // Connecting to the database
     con.connect((err) => {
         if (err) return console.error('error: ' + err.message);
     });
 
     csvtojson().fromFile(fileName).then(source => {
-  
+
         // Fetching the data from each row and inserting to the table "products"
         for (var i = 0; i < source.length; i++) {
             var title = source[i]["Title"],
@@ -94,10 +101,10 @@ exports.fullDB2 = () => {
                 genre = source[i]["Genre"],
                 image = source[i]["Image"]
             
-            let insertStatementAuthor = "INSERT IGNORE INTO authors (name)"
-            let valuesAuthor = [author]
-            let insertStatementGenre = "INSERT IGNORE INTO genres (name)"
-            let valuesGenre = [genre]
+            insertStatementAuthor = "INSERT IGNORE INTO authors (name)"
+            valuesAuthor = [author]
+            insertStatementGenre = "INSERT IGNORE INTO genres (name)"
+            valuesGenre = [genre]
 
             // Inserting data of current row into database for authors and genres
             con.query(insertStatementAuthor, valuesAuthor, 
@@ -105,6 +112,8 @@ exports.fullDB2 = () => {
                 if (err) {
                     console.log("Unable to insert Author at row ", i + 1);
                     return console.log(err);
+                } else {
+                    console.log(`Author ${author.slice(0, 50)} inserted successfully`, i + 1);
                 }
             });
             con.query(insertStatementGenre, valuesGenre, 
@@ -112,6 +121,8 @@ exports.fullDB2 = () => {
                 if (err) {
                     console.log("Unable to insert Genre at row ", i + 1);
                     return console.log(err);
+                } else {
+                    console.log(`Genre ${genre.slice(0, 50)} inserted successfully`, i + 1);
                 }
             });
             authorId = "SELECT id FROM authors WHERE name = '" + author + "'"
