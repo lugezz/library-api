@@ -16,9 +16,16 @@ exports.fullDB = () => {
                 genre = source[i]["Genre"],
                 image = source[i]["Image"]
             
+            // Skip if book exists
             if (title.length > 200) {
                 title = title.slice(0, 200);
             }
+            const book_db = await Library.bookModel.findOne({ where: {title: title} });
+            if (book_db !== null) {
+                console.log(`Book ${title.slice(0, 50)} already exists`, i + 1);
+                continue;
+            }
+            
             if (author.length > 120) {
                 author = author.slice(0, 120);
             }
@@ -43,19 +50,13 @@ exports.fullDB = () => {
                     );
                 }
                 
-                // Book
-                const book_db = await Library.bookModel.findOne({ where: {title: title} });
-                if (book_db === null) {
-                    await Library.bookModel.create(
-                        {title: title,
-                        authorId: author_db.id,
-                        genreId: genre_db.id,
-                        image: image}
-                    );
-                    console.log(`Book ${title.slice(0, 50)} inserted successfully`, i + 1);
-                } else {
-                    console.log(`Book ${title.slice(0, 50)} already exists`, i + 1);
-                };
+                // Book already checked doesn't exist
+                await Library.bookModel.create(
+                    {title: title,
+                    authorId: author_db.id,
+                    genreId: genre_db.id,
+                    image: image});
+                console.log(`Book ${title.slice(0, 50)} inserted successfully`, i + 1);
             } catch (err) {
                 console.log("Unable to insert item at row ", i + 1);
                 console.log("Error on:", 'title', title, 'author', author, 'genre', genre, 'image', image);

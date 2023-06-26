@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require('./database/db');
-const { fullDB2 } = require('./database/tools');
+const { fullDB } = require('./database/tools');
 
 const { REDIS_PORT, REDIS_URL, SESSION_SECRET } = require('./config/config');
 const cors = require('cors');
