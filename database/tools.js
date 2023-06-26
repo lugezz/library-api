@@ -136,6 +136,8 @@ exports.fullDB2 = () => {
                         if (err) {
                             console.log("Unable to insert Book at row ", i + 1);
                             return console.log(err);
+                        } else {
+                            console.log(`Book ${title.slice(0, 50)} inserted successfully`, i + 1);
                         }
                     });
                 });
