@@ -108,10 +108,10 @@ exports.deleteGenre = async (req, res, next) => {
 // AUTHORS -----------------------------------------------------
 // Get all Authors
 // If there is a query string, use pagination
-// If not it returns 1000 books
+// If not it returns 100 books
 exports.getAllAuthors = async (req, res, next) => {
     page = req.query.page || 1;
-    limit = req.query.limit || 1000;
+    limit = req.query.limit || 100;
     authors_count = await Library.authorModel.count();
 
     return getPaginateAuthors(res, page, limit, authors_count);
@@ -207,10 +207,10 @@ exports.deleteAuthor = async (req, res, next) => {
 // BOOKS -----------------------------------------------------
 // Get all Books
 // If there is a query string, use pagination
-// If not it returns 1000 books
+// If not it returns 100 books
 exports.getAllBooks = async (req, res, next) => {
     page = req.query.page || 1;
-    limit = req.query.limit || 1000;
+    limit = req.query.limit || 100;
     books_count = await Library.bookModel.count();
 
     return getPaginateBooks(res, page, limit, books_count);
