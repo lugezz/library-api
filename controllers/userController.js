@@ -9,13 +9,15 @@ exports.signUp = async (req, res, next) => {
     try {
         const newUser = await User.create({
             username,
-            password: hashedPassword
+            password: hashedPassword,
         });
         req.session.user = newUser;
         res.status(201).json({
             status: 'success',
             data: {
-                user: newUser
+                user: newUser,
+                token: req.sessionID
+                // Be careful it includes password
             }
         });
     } catch (err) {
@@ -47,7 +49,9 @@ exports.login = async (req, res, next) => {
             res.status(200).json({
                 status: 'success',
                 data: {
-                    user
+                    user,
+                    // Be careful it includes password
+                    token: req.sessionID
                 },
                 message: 'Logged in successfully'
             });
