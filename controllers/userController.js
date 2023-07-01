@@ -48,9 +48,6 @@ exports.login = async (req, res, next) => {
             });
         }
 
-        console.log(user);
-        console.log(user.password)
-        console.log(password)
         const passwordCorrect = await bcrypt.compare(password, user.password);
 
         if (passwordCorrect) {
@@ -78,4 +75,12 @@ exports.login = async (req, res, next) => {
             status: 'fail'
         });
     }
+}
+
+exports.logout = async (req, res, next) => {
+    req.session.destroy();
+    res.status(200).json({
+        status: 'success',
+        message: 'Logged out successfully'
+    });
 }
