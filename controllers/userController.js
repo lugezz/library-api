@@ -6,6 +6,14 @@ exports.signUp = async (req, res, next) => {
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    const userExists = await User.findOne({ where: { username } });
+    if (userExists) {
+        return res.status(400).json({
+            status: 'fail',
+            message: 'Username already exists'
+        });
+    }
+
     try {
         const newUser = await User.create({
             username,
@@ -32,7 +40,7 @@ exports.login = async (req, res, next) => {
     const { username, password } = req.body;
 
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ where: { username } });
         if (!user) {
             return res.status(404).json({
                 status: 'fail',
@@ -40,6 +48,7 @@ exports.login = async (req, res, next) => {
             });
         }
 
+        console.log(user);
         const passwordCorrect = await bcrypt.compare(password, user.password);
 
         if (passwordCorrect) {
