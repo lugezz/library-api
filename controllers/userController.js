@@ -40,7 +40,7 @@ exports.login = async (req, res, next) => {
     const { username, password } = req.body;
 
     try {
-        const user = await User.findOne({ where: { username } });
+        const user = await User.findAll({ where: { username } });
         if (!user) {
             return res.status(404).json({
                 status: 'fail',
@@ -48,7 +48,6 @@ exports.login = async (req, res, next) => {
             });
         }
 
-        console.log(user);
         const passwordCorrect = await bcrypt.compare(password, user.password);
 
         if (passwordCorrect) {
