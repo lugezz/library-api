@@ -63,6 +63,7 @@ exports.login = async (req, res, next) => {
                 },
                 message: 'Logged in successfully'
             });
+            req.session.save();
         } else {
             res.status(400).json({
                 status: 'fail',
