@@ -370,6 +370,7 @@ exports.getBooksByAuthor = async (req, res, next) => {
 
         res.status(200).json({
             status: 'success',
+            results: books.length,
             data: {
                 books
             }
@@ -399,6 +400,7 @@ exports.getBooksByGenre = async (req, res, next) => {
 
         res.status(200).json({
             status: 'success',
+            results: books.length,
             data: {
                 books
             }
@@ -429,6 +431,7 @@ exports.getBooksByAuthorAndGenre = async (req, res, next) => {
 
         res.status(200).json({
             status: 'success',
+            results: books.length,
             data: {
                 books
             }
