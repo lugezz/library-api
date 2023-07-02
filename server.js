@@ -37,7 +37,7 @@ app.set('trust proxy', 1);
 
 // CORS
 corsOptions = {
-  origin: ['http://localhost:5173', 'http://team5.com.ar'],
+  origin: 'http://team5.com.ar',
   credentials: true
 }
 
