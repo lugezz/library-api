@@ -41,19 +41,19 @@ router.route('/book/:id')
 
 // Search book by title
 router.route('/book/search/:title')
-    .get(protect, libraryController.searchBookByTitle);
+    .get(protect, libraryController.searchBooksByTitle);
 
 // Get all books by genre
 router.route('/book/genre/:genreId')
-    .get(protect, libraryController.getAllBooksByGenre);
+    .get(protect, libraryController.getBooksByGenre);
 
 // Get all books by author
 router.route('/book/author/:authorId')
-    .get(protect, libraryController.getAllBooksByAuthor);
+    .get(protect, libraryController.getBooksByAuthor);
 
 // Get all books by genre and author
-router.route('/book/genre/:genreId/author/:authorId')
-    .get(protect, libraryController.getAllBooksByGenreAndAuthor);
+router.route('/book/author/:authorId/genre/:genreId')
+    .get(protect, libraryController.getBooksByAuthorAndGenre);
 
 
 // -----------------------------------------------------
