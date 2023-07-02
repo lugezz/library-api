@@ -55,6 +55,7 @@ exports.login = async (req, res, next) => {
             req.session.user = user;
 
             res.status(200).json({
+                headers: req.headers,
                 status: 'success',
                 data: {
                     user,
