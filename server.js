@@ -60,7 +60,7 @@ let redisStore = new RedisStore({
 app.use(
   session({
     store: redisStore,
-    resave: false, // required: force lightweight session keep alive (touch)
+    resave: true,
     saveUninitialized: true, // recommended: only save session when data exists
     secret: SESSION_SECRET,
   })
