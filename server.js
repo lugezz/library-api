@@ -32,7 +32,10 @@ const connectWithRetry = () => {
 connectWithRetry();
 
 app.enable("trust proxy");
-app.use(cors({}));
+const corsOptions = {
+  credentials: true,
+};
+app.use(cors({corsOptions}));
 
 // Redis ------
 // Initialize client.
