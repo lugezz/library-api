@@ -15,10 +15,9 @@ services:
       - mysql-db:/var/lib/mysql
 
   redis:
-    image: redis
+    image: redis:alpine3.18
     volumes:
       - redis-db:/data
-    
 
   nginx:
     image: nginx:stable-alpine
