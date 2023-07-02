@@ -10,7 +10,7 @@ const fileName = "./database/Books.csv"
 exports.fullDB = () => {
     csvtojson().fromFile(fileName).then(async source => {
         // Fetching the data from each row 
-        for (var i = 119300; i < source.length; i++) {
+        for (var i = 122200; i < source.length; i++) {
             var title = source[i]["Title"],
                 author = source[i]["Author"],
                 genre = source[i]["Genre"],
