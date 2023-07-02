@@ -37,7 +37,7 @@ app.set('trust proxy', 1);
 
 // CORS
 corsOptions = {
-  origin: 'http://team5.com.ar',
+  origin: 'team5.com.ar',
   credentials: true
 }
 
