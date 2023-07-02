@@ -22,3 +22,10 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  
+  redis:
+    ports:
+      - "6379:6379"
+    command:
+      - redis-server --check-rdb-on-start yes
+      - redis-server --check-system
