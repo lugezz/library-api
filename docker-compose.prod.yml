@@ -27,5 +27,4 @@ services:
     ports:
       - "6379:6379"
     command:
-      - redis-server --check-rdb-on-start yes
       - redis-server --check-system
