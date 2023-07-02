@@ -51,19 +51,27 @@ exports.login = async (req, res, next) => {
         const passwordCorrect = await bcrypt.compare(password, user.password);
 
         if (passwordCorrect) {
-            // Assign user to session
-            req.session.user = user;
+            res.cookie('library-session', req.sessionID, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict'
+            });
+            
 
+            // Assign user to session and save
+            req.session.user = user;
+            req.session.save();
+
+
+            // Send response
             res.status(200).json({
                 status: 'success',
                 data: {
                     user,
                     // Be careful it includes password
-                    token: req.sessionID
                 },
                 message: 'Logged in successfully'
             });
-            req.session.save();
         } else {
             res.status(400).json({
                 status: 'fail',

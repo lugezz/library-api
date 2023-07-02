@@ -223,7 +223,7 @@ exports.getBook = async (req, res, next) => {
         if (!book) {
             return res.status(404).json({
                 status: 'fail',
-                message: 'No author found with that ID'
+                message: 'No book found with that ID'
             });
         }
 

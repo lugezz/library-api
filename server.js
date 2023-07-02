@@ -6,8 +6,8 @@ const { REDIS_PORT, REDIS_URL, SESSION_SECRET } = require('./config/config');
 const cors = require('cors');
 
 // Redis
-const RedisStore = require("connect-redis").default
 const session = require("express-session");
+const RedisStore = require("connect-redis").default
 const { createClient } = require("redis")
 
 // Routes
@@ -20,8 +20,9 @@ const port = process.env.PORT || 3000;
 const connectWithRetry = () => {
   db.authenticate()
     .then(() => {
-      console.log('Successfully connected to MySQL')
-      fullDB();
+      console.log('Successfully connected to MySQL on port 3306!')
+      // Full DB from CSV
+      // fullDB();
     })
     .catch(err => {
         console.error('Something went wrong', err);
@@ -31,45 +32,57 @@ const connectWithRetry = () => {
 
 connectWithRetry();
 
-app.enable("trust proxy");
+// App Trust Proxy
+app.set('trust proxy', 1);
 
-const corsOptions ={
-  origin:'*', 
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200,
+// CORS
+corsOptions = {
+  origin: 'http://localhost:5173',
+  credentials: true
 }
 
 app.use(cors(corsOptions));
 
+app.use(express.json());
+
+
 // Redis ------
 // Initialize client.
-let redisClient = createClient({socket: {
-        host: REDIS_URL,
-        port: REDIS_PORT,
-    }
+let redisClient = createClient({
+  socket: {
+    host: REDIS_URL,
+    port: REDIS_PORT
+  }
 })
-redisClient.connect().catch(console.error)
+
+
+redisClient.connect()
+.then(() => console.log(`Redis client connected on ${REDIS_URL}:${REDIS_PORT}`))
+.catch(console.error)
 
 // Initialize store.
 let redisStore = new RedisStore({
   client: redisClient,
-  prefix: "myapp:",
-  ttl: 86400 // 1 day
+  prefix: "myapp:"
 })
 
 // Initialize sesssion storage.
 app.use(
   session({
+    name: 'library-session',
     store: redisStore,
+    secret: SESSION_SECRET,
     resave: false, // required: force lightweight session keep alive (touch)
     saveUninitialized: false, // recommended: only save session when data exists
-    secret: SESSION_SECRET,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      maxAge: 86400, // 1 day
+      sameSite: 'lax' // make sure sameSite is not none
+    }
   })
-)
+);
 
-app.use(express.json());
-// app.use(express.static('public'))
-    
 app.get('/api/v1', (req, res) => {
       res.sendFile(__dirname + '/public/index.html');
     }

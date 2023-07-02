@@ -16,6 +16,9 @@ services:
 
   redis:
     image: redis
+    volumes:
+      - redis-db:/data
+    
 
   nginx:
     image: nginx:stable-alpine
@@ -24,3 +27,4 @@ services:
 
 volumes:
   mysql-db:
+  redis-db:
