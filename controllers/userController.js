@@ -63,15 +63,6 @@ exports.login = async (req, res, next) => {
                 },
                 message: 'Logged in successfully'
             });
-            res.writeHead(200, {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Credentials': 'true',
-                'Access-Control-Allow-Origin': 'http://localhost:5173',
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'Content-Type',
-                'Access-Control-Expose-Headers': 'Set-Cookie',
-                'Set-Cookie': 'sessionID=' + req.sessionID + '; HttpOnly'
-            });
             req.session.save();
         } else {
             res.status(400).json({
