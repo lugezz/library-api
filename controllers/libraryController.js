@@ -357,9 +357,10 @@ exports.getBooksByAuthor = async (req, res, next) => {
     try {
         const books = await Library.bookModel.findAll({
             where: {
-                authorId: req.params.id
+                authorId: req.params.authorId
             }
         });
+
         if (!books) {
             return res.status(404).json({
                 status: 'fail',
@@ -374,6 +375,7 @@ exports.getBooksByAuthor = async (req, res, next) => {
             }
         });
     } catch (err) {
+        console.log(err);
         res.status(400).json({
             status: 'fail'
         });
@@ -385,7 +387,7 @@ exports.getBooksByGenre = async (req, res, next) => {
     try {
         const books = await Library.bookModel.findAll({
             where: {
-                genreId: req.params.id
+                genreId: req.params.genreId
             }
         });
         if (!books) {
@@ -402,6 +404,7 @@ exports.getBooksByGenre = async (req, res, next) => {
             }
         });
     } catch (err) {
+        console.log(err);
         res.status(400).json({
             status: 'fail'
         });
@@ -431,6 +434,7 @@ exports.getBooksByAuthorAndGenre = async (req, res, next) => {
             }
         });
     } catch (err) {
+        console.log(err);
         res.status(400).json({
             status: 'fail'
         });
@@ -461,6 +465,7 @@ exports.searchBooksByTitle = async (req, res, next) => {
             }
         });
     } catch (err) {
+        console.log(err);
         res.status(400).json({
             status: 'fail'
         });
