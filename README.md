@@ -77,6 +77,17 @@ Main endpoint of the api is
 - Delete a Book
     - DELETE /book/< id >/
 
+### Specific routes
+
+-  Get all books of a specific author
+    - GET /book/author/< author id >/
+
+-  Get all books of a specific genre
+    - GET /book/genre/< genre id >/
+
+-  Get all books of a specific author and genre
+    - GET /book/author/< author id >/genre/< genre id >/
+
 ## Users
 - Sign up
     - POST /users/signup/

@@ -38,6 +38,24 @@ router.route('/book/:id')
     .get(protect, libraryController.getBook)
     .patch(protect, libraryController.updateBook)
     .delete(protect, libraryController.deleteBook);
+
+// Search book by title
+router.route('/book/search/:title')
+    .get(protect, libraryController.searchBookByTitle);
+
+// Get all books by genre
+router.route('/book/genre/:genreId')
+    .get(protect, libraryController.getAllBooksByGenre);
+
+// Get all books by author
+router.route('/book/author/:authorId')
+    .get(protect, libraryController.getAllBooksByAuthor);
+
+// Get all books by genre and author
+router.route('/book/genre/:genreId/author/:authorId')
+    .get(protect, libraryController.getAllBooksByGenreAndAuthor);
+
+
 // -----------------------------------------------------
 
 module.exports = router;

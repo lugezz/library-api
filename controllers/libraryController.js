@@ -349,3 +349,120 @@ const getPaginateAuthors = async (res, page, limit, authors_count = 0) => {
         });
     }
 };
+
+// Special routes -----------------------------------------------------
+
+// Books by Author
+exports.getBooksByAuthor = async (req, res, next) => {
+    try {
+        const books = await Library.bookModel.findAll({
+            where: {
+                authorId: req.params.id
+            }
+        });
+        if (!books) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No books found with that author ID'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                books
+            }
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+}
+
+// Books by Genre
+exports.getBooksByGenre = async (req, res, next) => {
+    try {
+        const books = await Library.bookModel.findAll({
+            where: {
+                genreId: req.params.id
+            }
+        });
+        if (!books) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No books found with that genre ID'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                books
+            }
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+}
+
+// Books by Author and Genre
+exports.getBooksByAuthorAndGenre = async (req, res, next) => {
+    try {
+        const books = await Library.bookModel.findAll({
+            where: {
+                authorId: req.params.authorId,
+                genreId: req.params.genreId
+            }
+        });
+        if (!books) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No books found with that author and genre ID'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                books
+            }
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+}
+
+// Search books by title
+exports.searchBooksByTitle = async (req, res, next) => {
+    try {
+        const books = await Library.bookModel.findAll({
+            where: {
+                title: {
+                    [Op.like]: `%${req.params.title}%`
+                }
+            }
+        });
+        if (!books) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No books found with that title'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                books
+            }
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
+}
