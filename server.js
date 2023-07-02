@@ -6,9 +6,9 @@ const { REDIS_PORT, REDIS_URL, SESSION_SECRET } = require('./config/config');
 const cors = require('cors');
 
 // Redis
-const RedisStore = require("connect-redis").default;
+const RedisStore = require("connect-redis").default
 const session = require("express-session");
-const {createClient} = require("redis")
+const { createClient } = require("redis")
 
 // Routes
 const libraryRouter = require('./routes/libraryRoutes');
@@ -54,14 +54,15 @@ redisClient.connect().catch(console.error)
 let redisStore = new RedisStore({
   client: redisClient,
   prefix: "myapp:",
+  ttl: 86400 // 1 day
 })
 
 // Initialize sesssion storage.
 app.use(
   session({
     store: redisStore,
-    resave: true,
-    saveUninitialized: true, // recommended: only save session when data exists
+    resave: false, // required: force lightweight session keep alive (touch)
+    saveUninitialized: false, // recommended: only save session when data exists
     secret: SESSION_SECRET,
   })
 )
