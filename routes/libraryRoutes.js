@@ -55,6 +55,26 @@ router.route('/book/author/:authorId')
 router.route('/book/author/:authorId/genre/:genreId')
     .get(protect, libraryController.getBooksByAuthorAndGenre);
 
+// -----------------------------------------------------
+
+// -----------------------------------------------------
+
+// BORROW AND RETURN -----------------------------------------------------
+router.route('/borrow/:bookId')
+    .post(protect, libraryController.borrowBook);
+
+router.route('/return/:bookId')
+    .post(protect, libraryController.returnBook);
+
+module.exports = router;
+// -----------------------------------------------------
+
+// ORDERS -----------------------------------------------------
+router.route('/order')
+    .get(protect, libraryController.getAllOrders)
+
+router.route('/order/:id')
+    .get(protect, libraryController.getOrder)
 
 // -----------------------------------------------------
 

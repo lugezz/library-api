@@ -474,3 +474,141 @@ exports.searchBooksByTitle = async (req, res, next) => {
         });
     }
 }
+
+// Borrow a book
+exports.borrowBook = async (req, res, next) => {
+    try {
+        const book = await Library.bookModel.findByPk(req.params.bookId);
+        if (!book) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No book found with that ID'
+            });
+        }
+
+        if (book.available_copies <= 0) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'No available copies'
+            });
+        }
+
+        // Decrement available copies
+        book.available_copies -= 1;
+        await book.save();
+
+        // Save order to database. Should be a session to get userId
+        const order = await Library.orderModel.create({
+            bookId: req.params.bookId,
+            userId: req.session.user.id
+        });
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                book
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            message: 'An error occurred'
+        });
+    }
+}
+
+// Return a book
+exports.returnBook = async (req, res, next) => {
+    try {
+        const book = await Library.bookModel.findByPk(req.params.bookId);
+        if (!book) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No book found with that ID'
+            });
+        }
+
+        const order = await Library.orderModel.findOne({
+            where: {
+                bookId: req.params.bookId,
+                userId: req.session.user.id
+            }
+        });
+
+        if (!order) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No order found with that book ID and user ID'
+            });
+        }
+
+        // Increment available copies
+        book.available_copies += 1;
+        await book.save();
+
+        // Delete order
+        order.destroy();
+        // await Library.orderModel.destroy(order);
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                book
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            message: 'An error occurred'
+        });
+    }
+}
+
+
+// ORDER -----------------------------------------------------
+// Get all orders
+exports.getAllOrders = async (req, res, next) => {
+    try {
+        const orders = await Library.orderModel.findAll();
+        res.status(200).json({
+            status: 'success',
+            results: orders.length,
+            data: {
+                orders
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            message: 'An error occurred'
+        });
+    }
+}
+
+// Get an order by id
+exports.getOrder = async (req, res, next) => {
+    try {
+        const order = await Library.orderModel.findByPk(req.params.id);
+        if (!order) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No order found with that ID'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                order
+            }
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: 'An error occurred'
+        });
+    }
+}

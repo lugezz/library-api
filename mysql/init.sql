@@ -40,9 +40,22 @@ CREATE TABLE IF NOT EXISTS books (
     genreId INT NOT NULL,
     description VARCHAR(120),
     image VARCHAR(300),
+    available_copies INT NOT NULL DEFAULT 5,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (authorId) REFERENCES authors(id),
     FOREIGN KEY (genreId) REFERENCES genres(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT NOT NULL AUTO_INCREMENT,
+    userId INT(6) UNSIGNED NOT NULL,
+    bookId INT NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (userId) REFERENCES users(id),
+    FOREIGN KEY (bookId) REFERENCES books(id)
 );
