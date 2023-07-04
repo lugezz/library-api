@@ -4,6 +4,8 @@ const DataTypes = require("sequelize"); // Import the built-in data types.
 const userModel = db.define("user",{
     "username": {"type": DataTypes.STRING},
     "password": {"type": DataTypes.STRING},
+    "fullName": {"type": DataTypes.STRING},
+    "address": {"type": DataTypes.STRING},
     "createdAt": {"type": DataTypes.DATE},
     "updatedAt": {"type": DataTypes.DATE}
 })

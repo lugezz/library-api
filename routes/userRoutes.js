@@ -14,4 +14,7 @@ router.route('/login')
 router.route('/logout')
     .get(userController.logout);
 
+router.route('/update/:userId')
+    .patch(userController.updateUser);
+
 module.exports = router;

@@ -22,7 +22,7 @@ const connectWithRetry = () => {
     .then(() => {
       console.log('Successfully connected to MySQL on port 3306!')
       // Full DB from CSV
-      // fullDB();
+      fullDB();
     })
     .catch(err => {
         console.error('Something went wrong', err);

@@ -94,7 +94,9 @@ Main endpoint of the api is
     ```
     {
         "username": "username",
-        "password": "password"
+        "password": "password",
+        "fullName": "Full name",
+        "address": "Address",
     }
     ```
 - Login
@@ -103,6 +105,15 @@ Main endpoint of the api is
     {
         "username": "username",
         "password": "password"
+    }
+    ```
+
+- Update User
+    - PATCH /users/< id >/
+    ```
+    {
+        "fullName": "Full name",
+        "address": "Address",
     }
     ```
 

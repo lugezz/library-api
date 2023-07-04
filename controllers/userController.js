@@ -3,7 +3,7 @@ const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 
 exports.signUp = async (req, res, next) => {
-    const { username, password } = req.body;
+    const { username, password, fullName, address } = req.body;
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const userExists = await User.findOne({ where: { username } });
@@ -18,6 +18,8 @@ exports.signUp = async (req, res, next) => {
         const newUser = await User.create({
             username,
             password: hashedPassword,
+            fullName,
+            address
         });
         req.session.user = newUser;
         res.status(201).json({
@@ -92,4 +94,35 @@ exports.logout = async (req, res, next) => {
         status: 'success',
         message: 'Logged out successfully'
     });
+}
+
+exports.updateUser = async (req, res, next) => {
+    const { fullName, address } = req.body;
+
+    try {
+        const user = await User.findOne({ where: { id: req.params.userId } });
+        if (!user) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'User not found'
+            });
+        }
+
+        user.fullName = fullName;
+        user.address = address;
+        await user.save();
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                user
+            },
+            message: 'User updated successfully'
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 'fail'
+        });
+    }
 }
