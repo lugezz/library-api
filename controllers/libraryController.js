@@ -493,6 +493,15 @@ exports.borrowBook = async (req, res, next) => {
             });
         }
 
+        userId = req.body.userId || req.session.user.id;
+
+        if (!userId) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'No user found'
+            });
+        }
+
         // Decrement available copies
         book.available_copies -= 1;
         await book.save();
@@ -500,7 +509,7 @@ exports.borrowBook = async (req, res, next) => {
         // Save order to database. Should be a session to get userId
         const order = await Library.orderModel.create({
             bookId: req.params.bookId,
-            userId: req.session.user.id
+            userId: userId
         });
 
         res.status(200).json({
@@ -529,10 +538,19 @@ exports.returnBook = async (req, res, next) => {
             });
         }
 
+        userId = req.body.userId || req.session.user.id;
+
+        if (!userId) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'No user found'
+            });
+        }
+
         const order = await Library.orderModel.findOne({
             where: {
                 bookId: req.params.bookId,
-                userId: req.session.user.id
+                userId: userId
             }
         });
 

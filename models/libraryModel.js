@@ -20,7 +20,15 @@ exports.bookModel = db.define("books",{
     "authorId": {"type": DataTypes.INTEGER},
     "genreId": {"type": DataTypes.INTEGER},
     "description": {"type": DataTypes.STRING},
+    "available_copies": {"type": DataTypes.INTEGER},
     "image": {"type": DataTypes.STRING},
+    "createdAt": {"type": DataTypes.DATE},
+    "updatedAt": {"type": DataTypes.DATE}
+})
+
+exports.orderModel = db.define("orders",{
+    "bookId": {"type": DataTypes.INTEGER},
+    "userId": {"type": DataTypes.INTEGER},
     "createdAt": {"type": DataTypes.DATE},
     "updatedAt": {"type": DataTypes.DATE}
 })
